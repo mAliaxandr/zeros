@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>zero</title>
+</head>
+<body>
+    zero
+    <script>
+        
+        
+        function zeros(expression) {
+
+            function multiply(first, second) {
+            var rFirst = first.split('').reverse();
+            var rSecond = second.split('').reverse();
+            var result = [];
+
+            for ( var i = 0; i < rFirst.length; i++){
+                for ( var k = 0; k < rSecond.length; k++){
+                    var res = rFirst[i] * rSecond[k];
+                    if (result[i + k]){
+                        result[i + k] = result[i + k] + res;
+                    } else {
+                        result[i + k] = res;
+                    }
+                }
+            }
+            // console.log('result 1 --', result);
+            var length = result.length;
+            for (var i = 0; i < length; i++){
+                var resItem = result[i] % 10;
+                var resForNext = Math.floor(result[i] / 10);
+                result[i] = resItem;
+                if (!result[i + 1]){
+                    if (resForNext > 0){
+                    result[i + 1] = resForNext;
+                    }
+                }
+                else{
+                    if (resForNext > 0){
+                        result[i + 1] = result[i + 1] + resForNext;
+                    }
+                    
+                }
+                
+            }
+
+            result = result.reverse();
+            return result.join('');
+            console.log('in -- ', first, second, rFirst, rSecond);
+            console.log('result 2 --',result.join(''));
+            
+        }
+
+
+            var arr =[];
+            var arrBig = [];
+            arr = expression.split('*');
+            console.log('arr -- ', arr);
+
+            for (var i = 0; i < arr.length; i++){
+                var arrItem = arr[i].split('!');
+                console.log('item -- ', arrItem);
+                if(arrItem.length === 3){
+                    var item = arrItem[0];
+                    var itemMultyply = item;
+                    while(item > 2){
+                    //    itemMultyply = itemMultyply *(item - 2);
+                        itemMultyply = multiply(itemMultyply.toString(), (item - 2).toString())
+                       item = item - 2;
+                    }
+                    arrBig.push(itemMultyply);
+                }
+                if(arrItem.length === 2){
+                    var item = arrItem[0];
+                    var itemMultyply = item;
+                    while(item > 1){
+                    //    itemMultyply = itemMultyply *(item - 1);
+                       itemMultyply = multiply(itemMultyply.toString(), (item - 1).toString())
+                       item = item - 1;
+                    }
+                    arrBig.push(itemMultyply);
+                }
+            }
+            var bigMultyplay = arrBig[0];
+            for (var i = 1; i < arrBig.length; i++){
+                // bigMultyplay = bigMultyplay * arrBig[i];
+                bigMultyplay = multiply(bigMultyplay, arrBig[i])
+            }
+            bigMultyplay = bigMultyplay.toString();
+            bigMultyplay = bigMultyplay.split('');
+            // bigMultyplay = bigMultyplay.reverse();
+            console.log('big -- ', arrBig, bigMultyplay);
+            var isZero = false;
+            var zeroCounter = 0;
+            do{
+                if(bigMultyplay[bigMultyplay.length - 1] === '0'){
+                    isZero = true;
+                    zeroCounter = zeroCounter + 1;
+                    bigMultyplay.splice(bigMultyplay.length - 1)
+                }else{
+                    isZero = false;
+                }
+            }
+            while(isZero === true);
+
+            
+            console.log('zeroCount - ', zeroCounter);
+            
+            return zeroCounter;
+        }
+
+        
+
+
+        zeros('45!*63!*28!*55!!*35!!*45!!*25!!*65!!*50!!*40!!*95!!*25!*45!*63!*28!*55!!');
+    </script>
+</body>
+</html>
